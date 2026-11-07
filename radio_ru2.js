@@ -40,8 +40,7 @@
     var current = window.__lampa_radio_current || null;
 
     function RadioComponent(object) {
-        var scroll = new Lampa.Scroll({ mask: true, over: true });
-        var html = $('<div></div>');
+        var html = $('<div class="radio-list" style="height:calc(100vh - 6em);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:8em;box-sizing:border-box"></div>');
         var last;
         var self = this;
 
@@ -82,15 +81,14 @@
 
                 item.on('hover:focus', function (e) {
                     last = e.target;
-                    scroll.update($(e.target), true);
+                    try { e.target.scrollIntoView({ block: 'center' }); } catch (err) {}
                 });
                 item.on('hover:enter', function () {
                     play(st, item);
                 });
-                scroll.append(item);
+                html.append(item);
             });
 
-            html.append(scroll.render());
             self.activity.loader(false);
             self.activity.toggle();
         };
@@ -98,8 +96,8 @@
         this.start = function () {
             Lampa.Controller.add('radio_ru_plugin', {
                 toggle: function () {
-                    Lampa.Controller.collectionSet(scroll.render());
-                    Lampa.Controller.collectionFocus(last || false, scroll.render());
+                    Lampa.Controller.collectionSet(html);
+                    Lampa.Controller.collectionFocus(last || false, html);
                 },
                 up: function () {
                     if (Navigator.canmove('up')) Navigator.move('up');
@@ -123,7 +121,6 @@
         this.stop = function () {};
         this.render = function () { return html; };
         this.destroy = function () {
-            scroll.destroy();
             html.remove();
         };
     }
