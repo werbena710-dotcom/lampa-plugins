@@ -12,11 +12,11 @@
         { name: 'Русское Радио', url: 'https://rusradio.hostingradio.ru/rusradio96.aacp' },
         { name: 'Ретро FM', url: 'https://retroserver.streamr.ru:8043/retro256.mp3' },
         { name: 'Вести FM', url: 'https://icecast.vgtrk.cdnvideo.ru/vestifm_mp3_192kbps' },
-        { name: 'Радио Дача', url: 'http://217.19.211.252:8022/RadioDacha' },
+        { name: 'Радио Дача', url: ['http://217.19.211.252:8022/RadioDacha', 'https://dacha.hostingradio.ru/dacha128.mp3'] },
         { name: 'Радио Шансон', url: 'https://chanson.hostingradio.ru:8041/chanson256.mp3' },
-        { name: 'Радио Маяк', url: 'https://icecast.vgtrk.cdnvideo.ru/mayak_mp3_192kbps' },
+        { name: 'Радио Маяк', url: ['https://icecast-vgtrk.cdnvideo.ru/mayakfm_aac_64kbps', 'https://icecast.vgtrk.cdnvideo.ru/mayakfm_mp3_128kbps', 'https://icecast.vgtrk.cdnvideo.ru/mayak_mp3_128kbps', 'https://icecast.vgtrk.cdnvideo.ru/mayak_mp3_192kbps'] },
         { name: 'Радио Монте-Карло', url: 'https://montecarlo.hostingradio.ru/montecarlo96.aacp' },
-        { name: 'Радио России', url: 'https://icecast.vgtrk.cdnvideo.ru/rr_mp3_192kbps' },
+        { name: 'Радио России', url: ['https://icecast-vgtrk.cdnvideo.ru/rr_aac_64kbps', 'https://icecast.vgtrk.cdnvideo.ru/rr_mp3_128kbps', 'https://icecast.vgtrk.cdnvideo.ru/rr_mp3_192kbps', 'https://icecast.vgtrk.cdnvideo.ru/rrzonam_mp3_128kbps'] },
         { name: 'Хит FM', url: 'https://hitfm.hostingradio.ru/hitfm96.aacp' },
         { name: 'Наше Радио', url: 'https://nashe1.hostingradio.ru/nashe-128.mp3' },
         { name: 'DFM', url: 'https://dfm.hostingradio.ru/dfm96.aacp' },
@@ -46,19 +46,28 @@
         var self = this;
 
         function play(st, item) {
-            if (current === st.url && !audio.paused) {
+            var list = Array.isArray(st.url) ? st.url : [st.url];
+            var key = list[0];
+            if (current === key && !audio.paused) {
                 audio.pause();
                 item.find('.radio-state').text('');
                 return;
             }
             html.find('.radio-state').text('');
-            current = window.__lampa_radio_current = st.url;
-            audio.src = st.url;
-            audio.play().then(function () {
-                item.find('.radio-state').text('▶');
-            }).catch(function () {
-                Lampa.Noty.show('Не удалось воспроизвести: ' + st.name);
-            });
+            current = window.__lampa_radio_current = key;
+
+            var i = 0;
+            function attempt() {
+                audio.src = list[i];
+                audio.play().then(function () {
+                    item.find('.radio-state').text('▶');
+                }).catch(function () {
+                    i++;
+                    if (i < list.length) attempt();
+                    else Lampa.Noty.show('Не удалось воспроизвести: ' + st.name);
+                });
+            }
+            attempt();
         }
 
         this.create = function () {
@@ -69,7 +78,7 @@
                     'border-radius:.5em;font-size:1.4em">' +
                     '<span>' + st.name + '</span><span class="radio-state"></span></div>'
                 );
-                if (current === st.url && !audio.paused) item.find('.radio-state').text('▶');
+                if (current === (Array.isArray(st.url) ? st.url[0] : st.url) && !audio.paused) item.find('.radio-state').text('▶');
 
                 item.on('hover:focus', function (e) {
                     last = e.target;
