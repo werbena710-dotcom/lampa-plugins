@@ -12,7 +12,22 @@
         { name: 'Наше Радио',    url: 'https://nashe1.hostingradio.ru/nashe-128.mp3' },
         { name: 'Дорожное радио',url: 'https://dorognoe.hostingradio.ru:8000/radio' },
         { name: 'Шансон',        url: 'https://chanson.hostingradio.ru:8041/chanson256.mp3' },
-        { name: 'SomaFM Groove Salad', url: 'https://ice1.somafm.com/groovesalad-128-mp3' }
+        { name: 'Русское Радио', url: 'https://rusradio.hostingradio.ru/rusradio96.aacp' },
+        { name: 'Хит FM',        url: 'https://hitfm.hostingradio.ru/hitfm96.aacp' },
+        { name: 'Maximum',       url: 'https://maximum.hostingradio.ru/maximum96.aacp' },
+        { name: 'DFM',           url: 'https://dfm.hostingradio.ru/dfm96.aacp' },
+        { name: 'Business FM',   url: 'https://bfm.hostingradio.ru/bfm96.aacp' },
+        { name: 'Радио России',  url: 'https://icecast.vgtrk.cdnvideo.ru/rr_mp3_192kbps' },
+        { name: 'Маяк',          url: 'https://icecast.vgtrk.cdnvideo.ru/mayak_mp3_192kbps' },
+        { name: 'Вести FM',      url: 'https://icecast.vgtrk.cdnvideo.ru/vestifm_mp3_192kbps' },
+        { name: 'SomaFM Groove Salad', url: 'https://ice1.somafm.com/groovesalad-128-mp3' },
+        { name: 'SomaFM Drone Zone',   url: 'https://ice1.somafm.com/dronezone-128-mp3' },
+        { name: 'SomaFM Lush',         url: 'https://ice1.somafm.com/lush-128-mp3' },
+        { name: 'SomaFM Secret Agent', url: 'https://ice1.somafm.com/secretagent-128-mp3' },
+        { name: 'Radio Paradise',      url: 'https://stream.radioparadise.com/mp3-128' },
+        { name: 'Radio Swiss Jazz',    url: 'https://stream.srg-ssr.ch/m/rsj/mp3_128' },
+        { name: 'Radio Swiss Classic', url: 'https://stream.srg-ssr.ch/m/rsc_de/mp3_128' },
+        { name: 'BBC World Service',   url: 'https://stream.live.vc.bbcmedia.co.uk/bbc_world_service' }
     ];
 
     var audio = new Audio();
